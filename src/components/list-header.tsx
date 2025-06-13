@@ -1,4 +1,13 @@
-import { View, Text, StyleSheet, Image } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  Pressable,
+  TouchableOpacity,
+} from 'react-native';
+import { Link, router } from 'expo-router';
+import { FontAwesome } from '@expo/vector-icons';
 
 const ListHeader = () => {
   return (
@@ -8,12 +17,33 @@ const ListHeader = () => {
           <View style={[styles.headerLeft]}>
             <View style={[styles.avatarContainer]}>
               <Image
-                source={require('../../assets/images/dell-1.jpg')}
+                source={require('../../assets/images/Nathan-Do-Headshot.png')}
                 style={[styles.avatarImage]}
-                resizeMode="cover"
               />
-              <Text style={[styles.avatarText]}>John Doe</Text>
+              <Text style={[styles.avatarText]}>Hello Nathan!</Text>
             </View>
+          </View>
+          <View style={[styles.headerRight]}>
+            <Link style={styles.cartContainer} href="../cart" asChild>
+              <Pressable>
+                {({ pressed }) => (
+                  <View>
+                    <FontAwesome
+                      name="shopping-cart"
+                      size={25}
+                      color={'gray'}
+                      style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
+                    />
+                    <View style={[styles.badgeContainer]}>
+                      <Text style={[styles.badgeText]}>1</Text>
+                    </View>
+                  </View>
+                )}
+              </Pressable>
+            </Link>
+            <TouchableOpacity style={styles.signOutButton}>
+              <FontAwesome name="sign-out" size={25} color={'red'} />
+            </TouchableOpacity>
           </View>
         </View>
         <View style={[styles.heroContainer]}></View>
