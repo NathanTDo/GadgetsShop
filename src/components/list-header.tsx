@@ -5,9 +5,11 @@ import {
   Image,
   Pressable,
   TouchableOpacity,
+  FlatList,
 } from 'react-native';
 import { Link, router } from 'expo-router';
 import { FontAwesome } from '@expo/vector-icons';
+import { CATEGORIES } from '../../assets/categories';
 
 const ListHeader = () => {
   return (
@@ -46,8 +48,32 @@ const ListHeader = () => {
             </TouchableOpacity>
           </View>
         </View>
-        <View style={[styles.heroContainer]}></View>
-        <View style={[styles.categoriesContainer]}></View>
+        <View style={[styles.heroContainer]}>
+          <Image
+            source={require('../../assets/images/hero.png')}
+            style={[styles.heroImage]}
+          />
+        </View>
+        <View style={[styles.categoriesContainer]}>
+          <Text style={[styles.sectionTitle]}>Categories</Text>
+          <FlatList
+            data={CATEGORIES}
+            renderItem={({ item }) => (
+              <Link href={`/categories/${item.slug}`} asChild>
+                <Pressable style={styles.category}>
+                  <Image
+                    source={{ uri: item.imageUrl }}
+                    style={[styles.categoryImage]}
+                  />
+                  <Text style={[styles.categoryText]}>{item.name}</Text>
+                </Pressable>
+              </Link>
+            )}
+            keyExtractor={(item) => item.name}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+          />
+        </View>
       </View>
     </View>
   );
