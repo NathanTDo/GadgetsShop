@@ -42,7 +42,7 @@ const ListHeader = () => {
               </Pressable>
             </Link>
             <TouchableOpacity style={styles.signOutButton}>
-              <FontAwesome name="sign-out" size={25} color={'red'} />
+              <FontAwesome name="sign-out" size={25} color={'gray'} />
             </TouchableOpacity>
           </View>
         </View>
