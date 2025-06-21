@@ -18,15 +18,14 @@ const TabsLayout = () => {
           tabBarInactiveTintColor: 'gray',
           tabBarLabelStyle: { fontSize: 16 },
           tabBarStyle: {
-            borderRadius: 50,
             paddingTop: 5,
-            marginHorizontal: 20,
-            marginBottom: 30,
             height: 70,
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
             position: 'absolute',
+            borderTopWidth: 1,
+            borderTopColor: '#ddd',
           },
           headerShown: false,
         }}
