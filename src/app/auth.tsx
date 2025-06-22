@@ -4,10 +4,12 @@ import {
   StyleSheet,
   ImageBackground,
   TextInput,
+  TouchableOpacity,
 } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import React from 'react';
 
 const authSchema = z.object({
   email: z.string().email({ message: 'Invalid email address' }),
@@ -26,6 +28,10 @@ const Auth = () => {
   });
 
   const signIn = (data: z.infer<typeof authSchema>) => {
+    console.log(data);
+  };
+
+  const signUp = (data: z.infer<typeof authSchema>) => {
     console.log(data);
   };
 
@@ -48,6 +54,7 @@ const Auth = () => {
             field: { onChange, onBlur, value },
             fieldState: { error },
           }) => (
+            <>
               <TextInput
                 onChangeText={onChange}
                 onBlur={onBlur}
@@ -59,8 +66,49 @@ const Auth = () => {
                 editable={!formState.isSubmitting}
               />
               {error && <Text style={styles.error}>{error.message}</Text>}
+            </>
           )}
         />
+
+        <Controller
+          control={control}
+          name="password"
+          render={({
+            field: { onChange, onBlur, value },
+            fieldState: { error },
+          }) => (
+            <>
+              <TextInput
+                onChangeText={onChange}
+                onBlur={onBlur}
+                value={value}
+                style={styles.input}
+                placeholder="Password"
+                secureTextEntry
+                placeholderTextColor="#AAA"
+                autoCapitalize="none"
+                editable={!formState.isSubmitting}
+              />
+              {error && <Text style={styles.error}>{error.message}</Text>}
+            </>
+          )}
+        />
+
+        <TouchableOpacity
+          style={styles.button}
+          onPress={handleSubmit(signIn)}
+          disabled={formState.isSubmitting}
+        >
+          <Text style={styles.buttonText}>Sign In</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[styles.button, styles.signUpButton]}
+          onPress={handleSubmit(signUp)}
+          disabled={formState.isSubmitting}
+        >
+          <Text style={styles.buttonText}>Sign Up</Text>
+        </TouchableOpacity>
       </View>
     </ImageBackground>
   );
