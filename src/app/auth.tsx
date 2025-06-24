@@ -5,20 +5,31 @@ import {
   ImageBackground,
   TextInput,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React from 'react';
+import { supabase } from '../lib/supabase';
+import { Toast } from 'react-native-toast-notifications';
+import { useAuth } from '../providers/auth-provider';
+import { Redirect } from 'expo-router';
 
 const authSchema = z.object({
   email: z.string().email({ message: 'Invalid email address' }),
   password: z
     .string()
-    .min(8, { message: 'Password must be at least 8 characters long' }),
+    .min(6, { message: 'Password must be at least 6 characters long' }),
 });
 
 const Auth = () => {
+  const { session } = useAuth();
+
+  if (session) {
+    return <Redirect href="/" />;
+  }
+
   const { control, handleSubmit, formState } = useForm({
     resolver: zodResolver(authSchema),
     defaultValues: {
@@ -27,12 +38,35 @@ const Auth = () => {
     },
   });
 
-  const signIn = (data: z.infer<typeof authSchema>) => {
-    console.log(data);
+  const signIn = async (data: z.infer<typeof authSchema>) => {
+    const { error } = await supabase.auth.signInWithPassword(data);
+
+    if (error) {
+      Alert.alert('Error', error.message);
+    } else {
+      Toast.show('Signed in succesfully', {
+        type: 'success',
+        duration: 1500,
+        placement: 'top',
+      });
+    }
   };
 
-  const signUp = (data: z.infer<typeof authSchema>) => {
-    console.log(data);
+  const signUp = async (data: z.infer<typeof authSchema>) => {
+    const { error } = await supabase.auth.signUp({
+      email: data.email,
+      password: data.password,
+    });
+
+    if (error) {
+      Alert.alert('Error', error.message);
+    } else {
+      Toast.show('Signed up succesfully', {
+        type: 'success',
+        duration: 1500,
+        placement: 'top',
+      });
+    }
   };
 
   return (
